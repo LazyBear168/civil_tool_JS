@@ -38,6 +38,7 @@ body {
 .topBarWrapper button {
     display: block;
     height: 100%;
+    width: 100%;
     background: none;
     border: none;
     padding: 8px 12px;
@@ -64,12 +65,9 @@ body {
 }
 
 /* Dropdown sub menu layput */
-.topBarWrapper .dropdown-content{
+.topBarWrapper .dropdown-content,
+.topBarWrapper .dropdown-submenu {
     display: none;
-}
-
-.topBarWrapper .dropdown-content.show {
-    display: flex;
     flex-direction: column;
     position: absolute;
     top: 100%;
@@ -79,9 +77,26 @@ body {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 }
+.topBarWrapper .dropdown-content.show {
+    display: flex;
+}
 .dropdown-content li {
     display: block;
     width: 100%;
     padding: 0;
     text-align: left;
+}
+/* 3rd-level submenu (appear left of About) */
+.has-submenu {
+  position: relative;
+}
+
+.dropdown-submenu.left {
+  top: 0;
+  left: auto;
+  right: 100%;
+}
+
+.has-submenu:hover > .dropdown-submenu.left {
+  display: block;
 }
