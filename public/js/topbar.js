@@ -134,9 +134,11 @@ function renderMenu(containerSelector) {
 
     // Determine how many to show based on screen size
     let visibleCount = 8;
-    if (window.innerWidth < 600) {
+    if (window.innerWidth < 455) {
+    visibleCount = 1;
+    } else if (window.innerWidth < 714) {
     visibleCount = 2;
-    } else if (window.innerWidth < 888) {
+    } else if (window.innerWidth < 988) {
     visibleCount = 4;
     } else if (window.innerWidth < 1050) {
     visibleCount = 6;
@@ -198,8 +200,6 @@ function initTopBar() {
         const menuId = button.getAttribute("aria-controls");
         let menu = document.getElementById(menuId);
 
-
-
         // Click toggles dropdown and aria-expanded
         button.addEventListener("click", (e) =>{
             e.preventDefault();
@@ -220,49 +220,50 @@ function initTopBar() {
     });
 
     // Hover behavior: only switch if a menu is already open
-    document.querySelectorAll(".dropdown").forEach(item => {
+    document.querySelectorAll(".dropdown, .has-submenu").forEach(item => {
         item.addEventListener("mouseenter", function () {
-            const currentDropdown = this.querySelector(".dropdown-content");
+            const currentDropdown = this.querySelector(".dropdown-content, .dropdown-submenu");
             const isInsideBurger = this.closest("#burgerMenu");
 
-            // If hovering inside an open menu (like the burger), don’t auto-close
+            // If hovering inside an open menu (like the burger), don't auto-close
             if (isInsideBurger) {
-            // 💡 Inside burger: Close all submenus in burger, then show current
-            const allSubmenus = isInsideBurger.querySelectorAll(".dropdown-content, .dropdown-submenu");
-            allSubmenus.forEach(menu => menu.classList.remove("show"));
-            const allButtons = isInsideBurger.querySelectorAll(".dropBtn");
-            allButtons.forEach(btn => btn.setAttribute("aria-expanded", "false"));
+                // Inside burger: Close all submenus in burger, then show current
+                const allSubmenus = isInsideBurger.querySelectorAll(".dropdown-content, .dropdown-submenu");
+                allSubmenus.forEach(menu => menu.classList.remove("show"));
+                const allButtons = isInsideBurger.querySelectorAll(".dropBtn");
+                allButtons.forEach(btn => btn.setAttribute("aria-expanded", "false"));
 
-            currentDropdown?.classList.add("show");
-            const btn = this.querySelector(".dropBtn");
-            if (btn) btn.setAttribute("aria-expanded", "true");
-            return;
-        }
+                if (currentDropdown) {
+                    currentDropdown.classList.add("show");
+                    const btn = this.querySelector(".dropBtn");
+                    if (btn) btn.setAttribute("aria-expanded", "true");
+                }
+                return;
+            }
 
-        // 💡 Outside burger: default hover logic
-        const activeDropdown = document.querySelector(".dropdown-content.show");
-        if (!activeDropdown) return;
+            // Outside burger: default hover logic
+            const activeDropdown = document.querySelector(".dropdown-content.show, .dropdown-submenu.show");
+            if (!activeDropdown) return;
 
-        if (currentDropdown && currentDropdown !== activeDropdown) {
-            CloseAllDropdowns();
-            currentDropdown.classList.add("show");
+            if (currentDropdown && currentDropdown !== activeDropdown) {
+                CloseAllDropdowns();
+                currentDropdown.classList.add("show");
 
-            const btn = this.querySelector(".dropBtn");
-            if (btn) btn.setAttribute("aria-expanded", "true");
-        }
+                const btn = this.querySelector(".dropBtn");
+                if (btn) btn.setAttribute("aria-expanded", "true");
+            }
         });
     });
 
     const burgerMenu = document.getElementById("burgerMenu");
     if (burgerMenu) {
         burgerMenu.addEventListener("mouseleave", () => {
-            const submenus = burgerMenu.querySelectorAll(".dropdown-content");
+            const submenus = burgerMenu.querySelectorAll(".dropdown-content, .dropdown-submenu");
             submenus.forEach(menu => menu.classList.remove("show"));
             const buttons = burgerMenu.querySelectorAll(".dropBtn");
             buttons.forEach(btn => btn.setAttribute("aria-expanded", "false"));
         });
     }
-
 
     // Click anywhere else to close dropdown
     document.addEventListener("click", () => {
@@ -271,7 +272,7 @@ function initTopBar() {
 }
 
 function CloseAllDropdowns() {
-    document.querySelectorAll(".dropdown-content").forEach(menu =>
+    document.querySelectorAll(".dropdown-content, .dropdown-submenu").forEach(menu =>
         menu.classList.remove("show")
     );
     document.querySelectorAll(".dropBtn").forEach(button => {

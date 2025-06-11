@@ -64,7 +64,7 @@ body {
     cursor: pointer;
 }
 
-/* Dropdown sub menu layput */
+/* Dropdown sub menu layout */
 .topBarWrapper .dropdown-content,
 .topBarWrapper .dropdown-submenu {
     display: none;
@@ -77,26 +77,27 @@ body {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 }
-.topBarWrapper .dropdown-content.show {
+
+/* Show state controlled by JavaScript */
+.topBarWrapper .dropdown-content.show,
+.topBarWrapper .dropdown-submenu.show {
     display: flex;
 }
+
 .dropdown-content li {
     display: block;
     width: 100%;
     padding: 0;
     text-align: left;
 }
-/* 3rd-level submenu (appear left of About) */
+
+/* 3rd-level submenu positioning */
 .has-submenu {
-  position: relative;
+    position: relative;
 }
 
 .dropdown-submenu.left {
-  top: 0;
-  left: auto;
-  right: 100%;
-}
-
-.has-submenu:hover > .dropdown-submenu.left {
-  display: block;
+    top: 0;
+    left: auto;
+    right: 100%;
 }
